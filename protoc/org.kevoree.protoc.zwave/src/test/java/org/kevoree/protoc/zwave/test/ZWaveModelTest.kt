@@ -57,6 +57,12 @@ fun main(args : Array<String>) {
     sofAlternative.value = 0x01
     rawByte0.addAlternatives(sofAlternative)
 
+    val sofFrame = factory.createFrameType()
+    sofFrame.isFinal = false
+    sofFrame.name = "SOF"
+    sofAlternative.frameType = sofFrame
+    sofFrame.
+
     /*
         val model = File("zwaveModel.json")
         val serializer = JSONModelSerializer()

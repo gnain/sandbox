@@ -1,0 +1,37 @@
+#* @vtlvariable name="packageName" type="java.lang.String" *#
+#* @vtlvariable name="className" type="java.lang.String" *#
+#* @vtlvariable name="alternatives" type="java.util.List<org.kevoree.protoc.ByteValuedItem>" *#
+
+package $packageName
+
+import java.util.ArrayList
+import java.util.HashMap
+
+public class $className(val byteValue : Byte, val typeName : String) {
+{
+${className}.valuesByByte.put(this.byteValue, this);
+${className}.valuesByName.put(this.typeName.toUpperCase(), this);
+}
+
+
+class object {
+private val valuesByByte = HashMap<Byte, ${className}>();
+private val valuesByName = HashMap<String, ${className}>();
+public fun valueOf(byteValue : Byte) : ${className}? {
+return valuesByByte.get(byteValue);
+}
+
+public fun valueOf(s : String)  : ${className}? {
+return valuesByName.get(s.toUpperCase());
+}
+
+public fun values() : Collection<${className}>{
+    return valuesByName.values();
+}
+
+#foreach( $alt in $alternatives)
+public val $alt.litteral.toUpperCase() : ${className} = ${className}($className.format("0x%02X", $alt.value.byteValue()), "$alt.litteral.toUpperCase()");
+#end
+
+}
+}

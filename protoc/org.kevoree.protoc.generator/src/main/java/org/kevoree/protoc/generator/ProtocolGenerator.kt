@@ -7,6 +7,9 @@ import org.kevoree.protoc.LengthValue
 import org.kevoree.log.Log
 import java.io.File
 import java.io.PrintWriter
+import org.apache.velocity.VelocityContext
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+import org.apache.velocity.app.VelocityEngine
 
 /**
  * Created with IntelliJ IDEA.
@@ -74,9 +77,9 @@ public class ProtocolGenerator {
             }
             is ByteValuedChunck -> {
                 generateByteValuedChunkAlternatives(chunk)
-                pr.println("when("+toCamelCase(chunk.name!!)+".valueOf(rawFrame[0])) {")
+                pr.println("when("+Helper.toCamelCase(chunk.name!!)+".valueOf(rawFrame[0])) {")
                 for(alternative in chunk.alternatives) {
-                    pr.println("is " + alternative.litteral!!.toUpperCase() + " ->{}")
+                    pr.println(Helper.toCamelCase(chunk.name!!) + "." + alternative.litteral!!.toUpperCase() + " ->{}")
                 }
                 pr.println("else -> {println(\"[ERROR] no chunk alternative found for value:\" + rawFrame[0])}")
                 pr.println("}")
@@ -94,41 +97,27 @@ public class ProtocolGenerator {
         pr.println("}")
     }
 
-    private fun toCamelCase(str:String) : String {
-        return str.substring(0,1).toUpperCase() + str.substring(1)
-    }
 
     private fun generateByteValuedChunkAlternatives(chunk : ByteValuedChunck) {
 
-        val directory = File(generationFolder + File.separator + "protoc"+File.separator + "alt")
-        if(!directory.exists()) {
-            directory.mkdirs()
-        }
+        Helper.checkOrCreateFolder(generationFolder + File.separator + "protoc"+File.separator + "alt");
+        val chunkName = Helper.toCamelCase(chunk.name!!);
 
-        val chunkName = toCamelCase(chunk.name!!)
+        val file = File(generationFolder + File.separator + "protoc"+File.separator + "alt" + File.separator + chunkName + ".kt");
+        val pr = PrintWriter(file, "utf-8");
 
-        val file = File(directory.getAbsolutePath() + File.separator + chunkName + ".kt")
-        val pr = PrintWriter(file)
+        val ve = VelocityEngine();
+        ve.setProperty("file.resource.loader.class", javaClass<ClasspathResourceLoader>().getName());
+        ve.init();
+        val template = ve.getTemplate("templates/ByteValuedChunckEnum.vm");
+        val ctxV = VelocityContext();
+        ctxV.put("packageName", "protoc.alt");
+        ctxV.put("className", chunkName);
+        ctxV.put("alternatives", chunk.alternatives);
+        template!!.merge(ctxV, pr);
 
-        pr.println("package protoc.alt")
-
-        pr.println("public enum class " + chunkName + "(val byteValue : Byte) {")
-
-        for(alternative in chunk.alternatives) {
-            pr.println(alternative.litteral!!.toUpperCase() + " : " + chunkName + "("+alternative.value+")")
-        }
-
-        pr.println("fun valueOf(b:Byte) : "+chunkName+"? {")
-        pr.println("for(v in values()) {")
-        pr.println("if(v.byteValue == b) {return v}")
-        pr.println("}")
-        pr.println("return null")
-        pr.println("}")
-        pr.println("}")
-        pr.flush()
-        pr.close()
-
-
+        pr.flush();
+        pr.close();
 
     }
 
