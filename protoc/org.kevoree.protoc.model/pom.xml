@@ -10,6 +10,7 @@
 
     <properties>
         <kotlin.version>0.6.1910</kotlin.version>
+        <kmf.version>1.9.11</kmf.version>
     </properties>
 
 
@@ -17,7 +18,7 @@
         <dependency>
             <groupId>org.kevoree.modeling</groupId>
             <artifactId>org.kevoree.modeling.microframework</artifactId>
-            <version>1.9.8</version>
+            <version>${kmf.version}</version>
         </dependency>
 
         <dependency>
@@ -43,7 +44,7 @@
             <plugin>
                 <groupId>org.kevoree.modeling</groupId>
                 <artifactId>org.kevoree.modeling.kotlin.generator.mavenplugin</artifactId>
-                <version>1.9.8</version>
+                <version>${kmf.version}</version>
                 <executions>
                     <execution>
                         <id>ModelGen</id>

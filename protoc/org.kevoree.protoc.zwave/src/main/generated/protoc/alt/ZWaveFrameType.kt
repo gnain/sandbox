@@ -26,13 +26,13 @@ return valuesByName.get(s.toUpperCase());
 }
 
 public fun values() : Collection<ZWaveFrameType>{
-    return valuesByName.values();
+return valuesByName.values();
 }
 
 public val ACK : ZWaveFrameType = ZWaveFrameType(0x06, "ACK");
 public val SOF : ZWaveFrameType = ZWaveFrameType(0x01, "SOF");
-public val CAN : ZWaveFrameType = ZWaveFrameType(0x18, "CAN");
 public val NAK : ZWaveFrameType = ZWaveFrameType(0x15, "NAK");
+public val CAN : ZWaveFrameType = ZWaveFrameType(0x18, "CAN");
 
 }
 }

@@ -26,11 +26,11 @@ return valuesByName.get(s.toUpperCase());
 }
 
 public fun values() : Collection<${className}>{
-    return valuesByName.values();
+return valuesByName.values();
 }
 
 #foreach( $alt in $alternatives)
-public val $alt.litteral.toUpperCase() : ${className} = ${className}($className.format("0x%02X", $alt.value.byteValue()), "$alt.litteral.toUpperCase()");
+public val $alt.name.toUpperCase() : ${className} = ${className}($className.format("0x%02X", $alt.value.byteValue()), "$alt.name.toUpperCase()");
 #end
 
 }

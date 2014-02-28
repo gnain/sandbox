@@ -1,0 +1,13 @@
+#* @vtlvariable name="packageName" type="java.lang.String" *#
+#* @vtlvariable name="className" type="java.lang.String" *#
+#* @vtlvariable name="alternatives" type="java.util.List<org.kevoree.protoc.ByteValuedItem>" *#
+#* @vtlvariable name="firstChunck" type="org.kevoree.protoc.Chunk"*#
+
+package $packageName
+
+public class $className() {
+
+#if($firstChunck instanceof)
+#end
+
+}

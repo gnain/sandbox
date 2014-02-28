@@ -20,48 +20,41 @@ fun main(args : Array<String>) {
     zWaveModel.name = "ZWave"
     zWaveModel.version = "1.0"
 
-
-    var rawByte0 = factory.createByteValuedChunck()
+    var rawByte0 = factory.createByteValuedChunk()
     rawByte0.name = "ZWaveFrameType"
-    zWaveModel.firstByte = rawByte0
+    zWaveModel.firstChunk = rawByte0
 
     val nackAlternative = factory.createByteValuedItem()
-    nackAlternative.litteral = "NAK"
+    nackAlternative.name = "NAK"
     nackAlternative.value = 0x15
     val nackFrame = factory.createFrameType()
-    nackFrame.isFinal = true
     nackFrame.name = "NAK"
     nackAlternative.frameType = nackFrame
     rawByte0.addAlternatives(nackAlternative)
 
     val ackAlternative = factory.createByteValuedItem()
-    ackAlternative.litteral = "ACK"
+    ackAlternative.name = "ACK"
     ackAlternative.value = 0x06
     val ackFrame = factory.createFrameType()
-    ackFrame.isFinal = true
     ackFrame.name = "ACK"
     ackAlternative.frameType = ackFrame
     rawByte0.addAlternatives(ackAlternative)
 
     val canAlternative = factory.createByteValuedItem()
-    canAlternative.litteral = "CAN"
+    canAlternative.name = "CAN"
     canAlternative.value = 0x18
     val canFrame = factory.createFrameType()
-    canFrame.isFinal = true
     canFrame.name = "CAN"
     canAlternative.frameType = canFrame
     rawByte0.addAlternatives(canAlternative)
 
     val sofAlternative = factory.createByteValuedItem()
-    sofAlternative.litteral = "SOF"
+    sofAlternative.name = "SOF"
     sofAlternative.value = 0x01
-    rawByte0.addAlternatives(sofAlternative)
-
     val sofFrame = factory.createFrameType()
-    sofFrame.isFinal = false
     sofFrame.name = "SOF"
     sofAlternative.frameType = sofFrame
-    sofFrame.
+    rawByte0.addAlternatives(sofAlternative)
 
     /*
         val model = File("zwaveModel.json")
@@ -73,7 +66,12 @@ fun main(args : Array<String>) {
     */
 
 
-    val genertor = ProtocolGenerator()
+    val src = File(".."+File.separator + "org.kevoree.protoc.zwave"+File.separator + "src"+File.separator+"main"+File.separator+"generated")
+    if(src.exists()) {
+        src.delete()
+    }
+
+    val genertor = ProtocolGenerator(src.getAbsolutePath());
     genertor.generateParser(zWaveModel)
 
 

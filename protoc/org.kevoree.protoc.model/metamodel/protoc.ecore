@@ -6,12 +6,11 @@
   <eClassifiers xsi:type="ecore:EClass" name="ProtocolModel">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="version" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="firstChunck" eType="#//Chunk"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="firstChunk" eType="#//Chunk"
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="FrameType">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isFinal" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="nextChunck" eType="#//Chunk"
         containment="true"/>
   </eClassifiers>
@@ -22,20 +21,21 @@
         containment="true" eOpposite="#//Chunk/previousChunk"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="DefaultChunck" eSuperTypes="#//Chunk">
+  <eClassifiers xsi:type="ecore:EClass" name="DefaultChunk" eSuperTypes="#//Chunk">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ByteValuedChunck" eSuperTypes="#//Chunk">
+  <eClassifiers xsi:type="ecore:EClass" name="ByteValuedChunk" eSuperTypes="#//Chunk">
     <eStructuralFeatures xsi:type="ecore:EReference" name="alternatives" upperBound="-1"
-        eType="#//ByteValuedItem" containment="true"/>
+        eType="#//ByteValuedItem" containment="true" eOpposite="#//ByteValuedItem/byteValuedChunk"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="LengthValue" eSuperTypes="#//Chunk">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ByteValuedItem">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="litteral" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ByteValuedItem" eSuperTypes="#//Chunk">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EByte"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="frameType" eType="#//FrameType"
         containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="byteValuedChunk" lowerBound="1"
+        eType="#//ByteValuedChunk" eOpposite="#//ByteValuedChunk/alternatives"/>
   </eClassifiers>
 </ecore:EPackage>
